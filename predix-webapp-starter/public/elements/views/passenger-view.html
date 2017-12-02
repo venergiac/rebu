@@ -1,0 +1,165 @@
+<link rel="import" href="import.html">
+
+<dom-module id="passenger-view">
+	<template>
+		<style include="rmd-view-styles"></style>
+		<px-card id="myCard" header-text="">
+			<px-steps id="steps"
+			items='[{"id":"1","label":"Pick-up"},{"id":"2","label":"Waiting"},{"id":"3","label":"Confirmed"}]'>
+		</px-steps>
+		<span id="step0">
+
+			<div class="u-mh+">
+				<span class="heading--subsection u-mv++">Hi Sample User, where you want to go?</span>
+				<div class="flex u-mv++">
+					<div class="u-mr++ u-1/1">
+
+						<label for="input1" ><px-icon icon="px-utl:location" class="style-scope px-actionable-design-demo x-scope px-icon-3"></px-icon> From (current):</label>
+						<input id="input1" value="[[from]]" class="text-input input--huge validation-error" type="text">
+					</div>
+				</div>
+				<div class="flex u-mv++">
+					<div class="u-mr++ u-1/1">
+						
+						<label for="input2" ><px-icon icon="px-utl:download" class="style-scope px-actionable-design-demo x-scope px-icon-3"></px-icon> To:</label>
+						<px-typeahead placeholder="To ...." local-candidates='["Nuovo Pignone Internetional", "Florence Airport", "Train Station SMN"]' class="text-input input--huge validation-error"></px-typeahead>
+					<!-- prefetch-url="https://www.predix-ui.com/px-typeahead/px-typeahead/countries.json" -->
+					</div>
+				</div>
+				<div class="flex u-mv++">
+					<div class="u-1/4">
+						<label for="input1"><px-icon icon="px-utl:clock" class="style-scope px-actionable-design-demo x-scope px-icon-3"></px-icon> In:</label>
+						<div class="flex">
+							<px-dropdown items='["5 minutes","10 minutes","15 minutes","30 minutes","45 minutes"]' selected="0" button-style="bare"></px-dropdown>
+						</div>
+					</div>
+				</div>
+				<div class="flex u-mv++">
+					<div class="u-1/4">
+						<label for="input1"><px-icon icon="px-utl:overflow" class="style-scope px-actionable-design-demo x-scope px-icon-3"></px-icon> Peoples:</label>
+						<div class="flex">
+							<px-dropdown items='["1","2","3","4"]' selected="0" button-style="bare"></px-dropdown>
+						</div>
+					</div>
+				</div>
+				<div class="flex u-mv++">
+					<div class="u-1/4">
+						<button on-click="next" class="btn btn--full btn--primary"> OK
+							<px-icon icon="px-utl:check" class="style-scope px-actionable-design-demo x-scope px-icon-3"></px-icon>
+						</button>
+					</div>
+				</div>
+			</div>
+			</span>
+			
+			<span id="step1">
+			<div class="u-mh+">
+				<span class="heading--subsection u-mv++">Waiting for confirmation</span>
+				<px-spinner	size="100">
+						</px-spinner>
+			</div>
+			</span>
+			<span id="step2">
+				<span class="heading--subsection u-mv++">Timeline.</span>
+			<div class="u-mh+">
+  <px-timeline enhanced timeline-data='[{"metaData":{"editedBy":"User","editedDate":"2017-11-24 14:12:00-07","editorTitle":"User","percent":"100","customIcon":"px-doc:website"},"content":{"title":"Start Pick-Up","bodyType":"text","body":[{"text":"Pick-Up requeted from Local to Nuovo Pignone.","headline":"Pick-Up requeted from Local to Nuovo Pignone","isComment":true}]}},{"metaData":{"editedBy":"REBU","editedDate":"2017-11-24 14:13:00-07","editorTitle":"REBU","percent":"100","customIcon":"px-utl:clock"},"content":{"title":"Pick-Up Accepted","bodyType":"text","body":[{"text":"Pick-Up accpted by Driver 1.","headline":"Pick-Up accepted by Driver 1.","isComment":true}]}},{"metaData":{"editedBy":"Driver","editedDate":"2017-11-24 14:32:00-07","editorTitle":"Driver","customIcon":"px-utl:download"},"content":{"title":"Expected Pick-up within 20 mins","bodyType":"text","body":[{"text":"Expected Pick-up within 20 mins.","headline":"Expected Pick-up within 20 mins.","isComment":true}]}}]' date-format="MMM D, YYYY HH:MM"></px-timeline>
+ 			</div>
+
+ 			<button id="confirm" on-click="next" class="btn btn--full btn--primary"> Confirm
+				<px-icon icon="px-utl:check" class="style-scope px-actionable-design-demo x-scope px-icon-3"></px-icon>
+			</button>
+
+
+ 			<button id="cancel" on-click="cancel" class="btn btn--full btn--primary"> Cancel
+				<px-icon icon="px-utl:close" class="style-scope px-actionable-design-demo x-scope px-icon-3"></px-icon>
+			</button>
+
+			</span>
+		</px-card>
+
+	</template>
+</template>
+<script>
+	Polymer({
+		is: 'passenger-view',
+		properties: {
+			from: {
+				type: String,
+				value: "unknown"
+			},
+			to: {
+				type: String,
+				value: "unknown"
+			},
+			step: {
+				type: Number,
+				notify: true,
+				value: 0,
+				observer : ['stepgo']
+			}
+		},
+		next : function() {
+			console.log('next');
+			this.$.steps.complete();
+
+			console.log(this.get('step'));
+			this.set('step', this.get('step')+1);
+			console.log(this.get('step'));
+
+		},
+		stepgo : function(id)
+		{
+			console.log(id);
+			if (id===0) {
+				this.$.step0.hidden=false;
+				this.$.step1.hidden=true;
+				this.$.step2.hidden=true;
+			} else if (id===1) {
+				this.$.step0.hidden=true;
+				this.$.step1.hidden=false;
+				this.$.step2.hidden=true;
+				this.checkConfirmation();
+			} else if (id===2) {
+				this.$.step0.hidden=true;
+				this.$.step1.hidden=true;
+				this.$.step2.hidden=false;
+				this.$.confirm.hidden=false;
+				this.$.cancel.hidden=true;
+			} else if (id===3) {
+				this.$.step0.hidden=true;
+				this.$.step1.hidden=true;
+				this.$.step2.hidden=false;
+				this.$.confirm.hidden=true;
+				this.$.cancel.hidden=false;
+			}
+		},
+		cancel : function() {
+			this.set('step', 0);
+			this.$.steps.jumpToStep(0);
+			this.$.steps.completed=[];
+		},
+		checkConfirmation : function() {
+			var that = this;
+
+			setTimeout(function() {
+				that.next();
+			}, 5000);
+
+
+		},
+		ready: function(e) {
+			var that = this;
+
+			setTimeout(function() {
+				if (navigator.geolocation) {;
+					navigator.geolocation.watchPosition(function(position) {
+						that.set('from', "Lat: " + position.coords.latitude + " Lng: " + position.coords.longitude);
+					});
+				} else {
+					that.set('from', "Geolocation is not supported by this browser.");
+				}
+			}, 1000);
+		}
+	});
+</script>
+</dom-module>

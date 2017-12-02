@@ -1,0 +1,90 @@
+<link rel="import" href="import.html">
+
+<dom-module id="driver-view">
+  <template>
+<style include="rmd-view-styles"></style>
+
+	
+    <px-card id="myCard" header-text="Driver">
+<div style="height:400px; width:300px; display:flex">
+<px-map flex-to-size zoom="12.6"
+lat="43.80129146518765"
+lng="11.219615936279299"> 
+
+
+
+<px-map-marker-group name="Taxy stop data" 
+data='{"type":"FeatureCollection","features":[
+{"type":"Feature","geometry":{"type":"Point","coordinates":["11.242165698","43.772330244 "]},"properties":{"title":"Alesandro Bettini","marker-icon":{"icon-base":"static-icon","icon-type":"warning"}},"id":"10001"},
+{"type":"Feature","geometry":{"type":"Point","coordinates":["11.242165698","43.772330244 "]},"properties":{"title":"Giacomo Veneri","marker-icon":{"icon-base":"static-icon","icon-type":"info"}},"id":"10002"},
+{"type":"Feature","geometry":{"type":"Point","coordinates":["11.242165698","43.772330244 "]},"properties":{"title":"Giacomo Monaci","marker-icon":{"icon-base":"static-icon","icon-type":"important"}},"id":"10003"},
+{"type":"Feature","geometry":{"type":"Point","coordinates":["11.219615936279299","43.80195146518765"]},"properties":{"title":"Fabio Mazzocchetti","marker-icon":{"icon-base":"static-icon","icon-type":"info"}},"id":"10004"},
+{"type":"Feature","geometry":{"type":"Point","coordinates":["11.219615936279299","43.80195146518765"]},"properties":{"title":"Diego Comina","marker-icon":{"icon-base":"static-icon","icon-type":"important"}},"id":"10005"}
+]}'></px-map-marker-group>
+	
+<px-map-tile-layer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png">
+</px-map-tile-layer></px-map></div>
+	  
+	  <div>
+	  <p>
+<px-data-table
+table-data='[
+{"first":"Giacomo","last":"Veneri","email":"giacomo.veneri@bhge.com","from":"Firenze SMN","to":"Airport","timestamp":""},
+{"first":"Giacomo","last":"Monaci","email":"giacomo.veneri@bhge.com","from":"Firenze SMN","to":"Nuovo Pignone","timestamp":""},
+{"first":"Alessandro","last":"Bettini","email":"alessandro.bettini@bhge.com","from":"Firenze SMN","to":"Nuovo Pignone","timestamp":""},
+{"first":"Fabio","last":"Mazzocchetti","email":"fabio.mazzocchetti@bhge.com","from":"Nuovo Pignone","to":"Firenze SMN","timestamp":""},
+{"first":"Diego","last":"Comina","email":"diego.comina@bhge.com","from":"Nuovo Pignone","to":"Firenze SMN","timestamp":""}]'
+language="en"
+selectable
+striped>
+<px-data-table-column
+name='first'
+sortable
+filterable>
+</px-data-table-column>
+<px-data-table-column
+name='last'
+sortable
+filterable>
+</px-data-table-column>
+<px-data-table-column
+name='from'
+sortable
+filterable>
+</px-data-table-column>
+<px-data-table-column
+name='to'
+sortable
+filterable>
+</px-data-table-column>
+<px-data-table-column
+name='timestamp'
+sortable
+filterable>
+</px-data-table-column>
+</px-data-table>
+  <px-icon icon="px-nav:search" class="style-scope px-actionable-design-demo x-scope px-icon-3"></px-icon>
+</p>
+		  </div>
+    </px-card>
+    
+  </template>
+  <script>
+    Polymer({
+      is: 'driver-view',
+      properties: {},
+      ready: function() {
+        var that = this;
+		console.log("driver");
+        /*this.$.rebuContentAjaxEl.url = "/rebu";
+
+        this.$.rebuContentAjaxEl.addEventListener('response', function(evt) {
+          that.$.rebuContentAjaxEl.markdown = evt.detail.response;
+        });
+        this.$.rebuContentAjaxEl.generateRequest();*/
+      }
+    });
+  </script>
+</dom-module>
+
+

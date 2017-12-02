@@ -1,0 +1,23 @@
+{
+  "entrypoint": "public/index.html",
+  "shell": "public/elements/seed-app/seed-app.html",
+  "fragments": [
+    "public/elements/views/company-view.html",
+	  "public/elements/views/passenger-view.html",
+	  "public/elements/views/driver-view.html",
+    "public/elements/views/import.html"
+  ],
+  "sources": [
+    "public/elements/**/*",
+    "public/index*",
+    "public/seed*",
+    "!public/elements/dev-guide/**"
+  ],
+  "builds": [
+    {
+      "name": "es5-basic",
+      "js": {"compile": true, "minify": true},
+      "bundle": true
+    }
+  ]
+}
