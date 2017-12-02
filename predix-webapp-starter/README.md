@@ -1,5 +1,7 @@
 # REBU
 
+## Object
+
 ```
 trip : {
     id : null,
@@ -38,7 +40,7 @@ driver : {
 }
 ```
 
-# LOCATIONS
+## LOCATIONS
 
 
 ```
@@ -46,15 +48,16 @@ GET /rebu/l/v1/locations?name='santa maria novella'
 return  ['']
 ```
 
-# PASSENGERS
+## PASSENGERS
    
 ```
 GET /rebu/p/v1/passengers/212442540
 return passenger
+```
 
+## TRIPS
 
-TRIPS
------
+```
 GET /rebu/t/v1/trips?status=new &driverid=123456 &passengerid=212442540
 return [trip,trip]
 
@@ -72,7 +75,7 @@ PUT /rebu/t/v1/trips/{id}/done
 body: {when:'',lat:'',lng:'', ts:587326432, driverid: 12345}
 return: confirmation
 ```
-# DRIVERS
+## DRIVERS
 
 ```
 GET /rebu/d/v1/drivers/{id}
@@ -81,7 +84,7 @@ return driver
 ```
 
 
-# base on  Predix WebApp Starter
+# based on  Predix WebApp Starter
 
 *NOTE:* This project was formerly known as the "Predix Seed." Code for old versions of this project can still be found in the old Github repository:  https://github.com/predixdev/predix-seed
 
