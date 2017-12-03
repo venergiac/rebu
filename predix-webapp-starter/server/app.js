@@ -82,7 +82,9 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.get('/docs', require('./routes/docs')(config));
 
 // route to return info for path-guide component.
-app.get('/rebu', require('./routes/rebu')(config));
+//app.get('/rebu', require('./routes/rebu')(config));
+mockRebuRoutes = require('./routes/rebu')(config);
+app.use(['/rebu', '/api/rebu'], jsonServer.router(mockRebuRoutes));
 
 if (!config.isUaaConfigured()) { 
   // no restrictions
