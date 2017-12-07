@@ -26,6 +26,7 @@ if(node_env === 'development') {
 	settings.websocketServerURL = devConfig.websocketServerURL;
 	settings.rmdDatasourceURL = devConfig.rmdDatasourceURL;
 	settings.rmdDocsURL = devConfig.rmdDocsURL;
+	settings.rebuURL = devConfig.rebuURL;
 
 } else {
 	// read VCAP_SERVICES
@@ -56,6 +57,7 @@ if(node_env === 'development') {
 	settings.websocketServerURL = process.env.websocketServerURL;
 	settings.rmdDatasourceURL = process.env.rmdDatasourceURL;
 	settings.rmdDocsURL = process.env.rmdDocsURL;
+	settings.rebuURL = process.env.rebuURL;
 }
 // console.log('config settings: ' + JSON.stringify(settings));
 

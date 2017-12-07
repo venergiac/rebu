@@ -3,10 +3,19 @@
 <dom-module id="passenger-view">
 	<template>
 		<style include="rmd-view-styles"></style>
+
+
 		<px-card id="myCard" header-text="">
+		<div class="u-mh+">
+				<px-alert-label id="online" type="important" label="Oops! It appears you are offline"></px-alert-label>
+		</div>
+		<iron-ajax id="onlineCall" handle-as="json"></iron-ajax>
+
 			<px-steps id="steps"
 			items='[{"id":"1","label":"Pick-up"},{"id":"2","label":"Waiting"},{"id":"3","label":"Confirmed"}]'>
 		</px-steps>
+		
+		
 		<span id="step0">
 
 			<div class="u-mh+">
@@ -22,7 +31,7 @@
 					<div class="u-mr++ u-1/1">
 
 						<label for="input2" ><px-icon icon="px-utl:download" class="style-scope px-actionable-design-demo x-scope px-icon-3"></px-icon> To:</label>
-						<px-typeahead placeholder="To ..." local-candidates='[[locations]]' class="text-input input--huge validation-error"></px-typeahead>
+						<px-typeahead id="searchTo" placeholder="To ..." class="text-input input--huge validation-error" remote-url="api/rebu/l/locations?name=%QUERY" remote-url-searching="true"></px-typeahead>
 					<!-- prefetch-url="https://www.predix-ui.com/px-typeahead/px-typeahead/countries.json" -->
 					</div>
 				</div>
@@ -181,7 +190,7 @@
 			}, 1000);
 
 
- 		this.$.locationsCall.url = "api/rebu/locations";
+ 		this.$.locationsCall.url = "mock/rebu/locations";
 
 		this.$.locationsCall.addEventListener('response', function (evt) {
           this.locations = evt.detail.response;
@@ -193,7 +202,7 @@
 
         var passengerid = '212442540';
 
-        this.$.tripsCall.url = "api/rebu/trips";
+        this.$.tripsCall.url = "mock/rebu/trips";
         //this.$.tripsCall.params = {"status":"new","passengerid":passengerid};
 
 		this.$.tripsCall.addEventListener('response', function (evt) {
@@ -205,7 +214,27 @@
 
        this.$.tripsCall.generateRequest();
 
+		this.$.onlineCall.url = "api/rebu/health";
+        //this.$.tripsCall.params = {"status":"new","passengerid":passengerid};
 
+		this.$.onlineCall.addEventListener('response', function (evt) {
+		console.log(evt);
+          this.online = evt.detail.response.status;
+          this.$.online.hidden=true;
+          
+        }.bind(this));
+
+        this.$.onlineCall.addEventListener('error', function (evt) {
+		  console.log(evt);
+          this.online = 'not connected';
+          this.$.online.hidden=false;
+        }.bind(this));
+
+       this.$.onlineCall.generateRequest();
+
+       this.$.searchTo.addEventListener('px-typeahead-search-input-change', function (evt) {
+		  console.log(evt);
+        }.bind(this));
 
 
 		}

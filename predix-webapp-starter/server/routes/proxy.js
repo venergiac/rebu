@@ -191,7 +191,7 @@ setProxyRoutes();
 var customProxyMiddleware = function(pathPrefix, endpoint, targetPath) {
 	console.log('custom endpoint: ' + endpoint);
 	return expressProxy(endpoint, {
-		https: true,
+		https: endpoint.startsWith('https'),
 		forwardPath: function (req) {
 			var path = req.url.replace(pathPrefix, targetPath || '');
 			console.log('proxying to:', path);
@@ -201,6 +201,8 @@ var customProxyMiddleware = function(pathPrefix, endpoint, targetPath) {
 		decorateRequest: buildDecorator()
 	});
 };
+
+
 
 module.exports = {
 	router: router,

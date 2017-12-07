@@ -79,12 +79,32 @@ app.use(bodyParser.urlencoded({ extended: false }));
 	SET UP EXPRESS ROUTES
 *****************************************************************************/
 
-app.get('/docs', require('./routes/docs')(config));
+///////////////////////////////////////
+//REBU
 
-// route to return info for path-guide component.
-//app.get('/rebu', require('./routes/rebu')(config));
-mockRebuRoutes = require('./routes/rebu')(config);
-app.use(['/rebu', '/api/rebu'], jsonServer.router(mockRebuRoutes));
+
+  if (config.rebuURL && config.rebuURL.indexOf('http') === 0) {
+    console.log('rebu services are configured');
+
+      if (config.isUaaConfigured()) {
+          app.get('/api/rebu/*', 
+                  proxy.addClientTokenMiddleware, 
+                  proxy.customProxyMiddleware('/api/rebu', config.rebuURL, '/rebu/v1'));
+      } else {
+          app.get('/api/rebu/*',  proxy.customProxyMiddleware('/api/rebu', config.rebuURL, '/rebu/v1'));
+      }
+
+  } else {
+    console.log('rebu services are NOT configured ' + config.rebuURL);
+  }
+  
+  mockRebuRoutes = require('./routes/rebu')(config);
+  app.use(['/mock/rebu'], jsonServer.router(mockRebuRoutes));
+  
+///////////////////////////////////////
+
+
+app.get('/docs', require('./routes/docs')(config));
 
 if (!config.isUaaConfigured()) { 
   // no restrictions
@@ -141,6 +161,7 @@ if (!config.isUaaConfigured()) {
         proxy.addClientTokenMiddleware, 
         proxy.customProxyMiddleware('/api/datagrid', config.rmdDatasourceURL, '/services/experience/datasource/datagrid'));
   }
+
 
   //Use this route to make the entire app secure.  This forces login for any path in the entire app.
   app.use('/', passport.authenticate('main', {
