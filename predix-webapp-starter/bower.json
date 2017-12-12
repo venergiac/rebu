@@ -18,7 +18,7 @@
     "app-route": "PolymerElements/app-route#^0.9.1",
     "px": "^1.4.3",
     "px-card": "^1.0.0",
-    "px-view-header": "^1.0.0",
+    "px-view-header": "^2.0.1",
     "px-login": "^2.0.0",
     "px-context-browser": "^2.0.0",
     "iron-ajax": "^2.0.0",
@@ -48,7 +48,8 @@
     "px-timeline": "^1.0.8",
     "px-buttons-design": "^2.0.5",
     "px-typeahead": "^2.1.0",
-    "px-toggle": "^2.1.0"
+    "px-toggle": "^2.1.0",
+    "px-tabs": "^2.1.0"
   },
   "devDependencies": {
     "px-theme": "^3.0.0",

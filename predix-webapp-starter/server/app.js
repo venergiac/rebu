@@ -87,11 +87,12 @@ app.use(bodyParser.urlencoded({ extended: false }));
     console.log('rebu services are configured');
 
       if (config.isUaaConfigured()) {
-          app.get('/api/rebu/*', 
+          app.all('/api/rebu/*', 
                   proxy.addClientTokenMiddleware, 
-                  proxy.customProxyMiddleware('/api/rebu', config.rebuURL, '/rebu/v1'));
+                  proxy.customProxyMiddleware('/api/rebu', config.rebuURL, '/rebu'));
+
       } else {
-          app.get('/api/rebu/*',  proxy.customProxyMiddleware('/api/rebu', config.rebuURL, '/rebu/v1'));
+          app.all('/api/rebu/*',  proxy.customProxyMiddleware('/api/rebu', config.rebuURL, '/rebu'));
       }
 
   } else {
