@@ -3,6 +3,7 @@ package com.ge.predix.solsvc.repository;
 import java.util.List;
 import java.util.UUID;
 
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.PagingAndSortingRepository;
 import org.springframework.data.repository.query.Param;
 import org.springframework.data.rest.core.annotation.RepositoryRestResource;
@@ -14,4 +15,7 @@ public interface PassengerRepository extends PagingAndSortingRepository<Passenge
 
 	List<Passenger> findById(@Param("id")  java.util.UUID id);
 	List<Passenger> findByEmailIgnoreCase(@Param("email") String email);
+	
+	 @Query("select count(*) from Passenger")
+	 int findNumber();
 }

@@ -8,67 +8,98 @@
     <p>
 
       <div class="flex flex--wrap flex--justify">
- <div class="gaugeContainer u-p u-mb flex flex--col">
-          <div class="flex u-mb">
- <px-gauge value="6" min="0" max="20" bar-width="0" unit="passengers" normal='[[5,10]]'></px-gauge>
-</div>
-</div>
+       <div class="gaugeContainer u-p u-mb flex flex--col">
+        <div class="flex u-mb">
+         <px-gauge value="{{nCurrentTrips}}" min="0" max="20" bar-width="0" unit="# active trips" normal='[[0,20]]'></px-gauge>
+       </div>
+     </div>
 
-        <div class="gaugeContainer u-p u-mb flex flex--col">
-          <div class="flex u-mb">
-            <px-kpi spark-type="line" title="Passengers" value="2/h" uom="avg #" status-icon="px-nav:up" status-color="green" status-label="12%" spark-data='[{"x":1397102460000,"y":0.56},{"x":1397139660000,"y":0.4},{"x":1397177400000,"y":0.43},{"x":1397228040000,"y":0.33},{"x":1397248260000,"y":0.47},{"x":1397291280000,"y":0.41},{"x":1397318100000,"y":0.26},{"x":1397342100000,"y":0.42},{"x":1397390820000,"y":0.27},{"x":1397408100000,"y":0.38},{"x":1397458800000,"y":0.36},{"x":1397522940000,"y":0.32}]'></px-kpi>
-          </div>
-         
-        </div>
+     <div class="gaugeContainer u-p u-mb flex flex--col">
+      <div class="flex u-mb">
+        <px-kpi spark-type="line" title="Passengers" value="2/h" uom="avg #" status-icon="px-nav:up" status-color="green" status-label="12%" spark-data='[[xy]]'></px-kpi>
+      </div>
 
-        <div class="gaugeContainer u-p u-mb flex flex--col">
-          <div class="flex u-mb">
-            <div>
-            <px-key-value-pair class="child" key="Registered" value="583" uom="#" size="beta"></px-key-value-pair>
-          </div>
-          <div>
-            <px-key-value-pair class="child" key="Drivers" value="2" uom="#" size="beta"></px-key-value-pair>
-          </div>
-          </div>
+    </div>
 
+    <div class="gaugeContainer u-p u-mb flex flex--col">
+      <div class="flex u-mb">
+
+          <px-key-value-pair class="child" key="Passengers" value="{{nPassengers}}" uom="#" size="beta"></px-key-value-pair>
+
+      </div>
+      <div class="flex u-mb">
+        <div>
+          <px-key-value-pair class="child" key="Drivers" value="{{nDrivers}}" uom="#" size="beta"></px-key-value-pair>
         </div>
       </div>
-    </p>
-    <p>
-      <px-data-table
-      table-data='[
-      {"first":"Giacomo","last":"Veneri","email":"giacomo.veneri@bhge.com","from":"Firenze SMN","to":"Airport","timestamp":""},
-      {"first":"Giacomo","last":"Monaci","email":"giacomo.veneri@bhge.com","from":"Firenze SMN","to":"Nuovo Pignone","timestamp":""},
-      {"first":"Alessandro","last":"Bettini","email":"alessandro.bettini@bhge.com","from":"Firenze SMN","to":"Nuovo Pignone","timestamp":""},
-      {"first":"Fabio","last":"Mazzocchetti","email":"fabio.mazzocchetti@bhge.com","from":"Nuovo Pignone","to":"Firenze SMN","timestamp":""},
-      {"first":"Diego","last":"Comina","email":"diego.comina@bhge.com","from":"Nuovo Pignone","to":"Firenze SMN","timestamp":""}]'
-      language="en"
-      striped>
-      <px-data-table-column
-      name='first'
-      sortable
-      filterable>
-    </px-data-table-column>
-    <px-data-table-column
-    name='last'
-    sortable
-    filterable>
-  </px-data-table-column>
+
+    </div>
+  </div>
+</p>
+<p>
+  <iron-ajax id="tripsCall"></iron-ajax>
+  <iron-ajax 
+    id="nPassengersCall"
+    handle-as="json"
+    on-response="onNPassengers"
+    debounce-duration="300"></iron-ajax>
+  <iron-ajax auto
+    id="nDriversCall"
+    handle-as="json"
+    on-response="onNDrivers"
+    debounce-duration="300"></iron-ajax>
+
+
+  <px-data-table
+  table-data='{{trips}}'
+  language="en"
+  striped>
+
   <px-data-table-column
-  name='from'
+  name='passengerName'
+  label='Passenger'
+  sortable
+  filterable> </px-data-table-column>
+  <px-data-table-column
+  name='driverName'
+  label='Driver'
+  sortable
+  filterable> </px-data-table-column>
+  <px-data-table-column
+  name='notes'
   sortable
   filterable>
 </px-data-table-column>
 <px-data-table-column
-name='to'
+name='stuff'
+lable="Passengers#"
+sortable
+filterable> </px-data-table-column>
+<px-data-table-column
+name='toName'
+label='To'
+sortable
+filterable>
+</px-data-table-column>
+<px-data-table-column
+name='whenmin'
+label='When'
 sortable
 filterable>
 </px-data-table-column>
 <px-data-table-column
 name='timestamp'
+label='Date'
 sortable
 filterable>
 </px-data-table-column>
+
+<px-data-table-column
+name='status'
+sortable
+filterable>
+</px-data-table-column>
+
 </px-data-table>
 <px-icon icon="px-nav:search" class="style-scope px-actionable-design-demo x-scope px-icon-3"></px-icon>
 </p>
@@ -78,10 +109,53 @@ filterable>
 <script>
   Polymer({
     is: 'company-view',
-    properties: {},
+    properties: {
+    },
+
+    onTrips : function(e) {
+      this.trips = e.detail.response._embedded.trips;
+      this.xy=[];
+      this.nCurrentTrips =0;
+      if (this.trips) {
+        var j=0;
+        for (var i=this.trips.length-1; i>=0; i--) {
+
+          j++;
+          this.xy.push(
+              {
+                "x": j,
+                "y": this.trips[i].stuff,
+              }
+            );
+
+          if (this.trips[i].status=='pending' || this.trips[i].status=='confirmed' || this.trips[i].status=='accepted') 
+          {  
+            console.log(this.trips[i].status);
+            this.nCurrentTrips++;
+          }
+        }
+      }
+      console.log(this.nCurrentTrips);
+    },
+    onNPassengers : function(e) {
+      this.nPassengers = e.detail.response;
+    },
+    onNDrivers : function(e) {
+      this.nDrivers = e.detail.response;
+    },
+
     ready: function() {
       var that = this;
-      console.log("company");
+      
+      this.$.tripsCall.url = "api/rebu/v1/trips?page=0&size=10&projection=tripcompact&sort=timestamp,desc";
+      this.$.tripsCall.addEventListener('response', this.onTrips.bind(this));
+      this.$.tripsCall.generateRequest();
+
+      this.$.nPassengersCall.url="api/rebu/v1/drivers/search/findNumber";
+      this.$.nPassengersCall.generateRequest();
+
+      this.$.nDriversCall.url="api/rebu/v1/passengers/search/findNumber";
+      this.$.nDriversCall.generateRequest();
 
     }
   });

@@ -12,14 +12,12 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
-import org.springframework.boot.autoconfigure.domain.EntityScan;
 import org.springframework.boot.context.embedded.tomcat.TomcatEmbeddedServletContainerFactory;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.core.env.MutablePropertySources;
-import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -27,15 +25,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.context.support.StandardServletEnvironment;
 import org.springframework.web.servlet.ModelAndView;
-
-import com.ge.predix.solsvc.repository.AddressRepository;
-import com.ge.predix.solsvc.repository.DriverRepository;
-import com.ge.predix.solsvc.repository.PassengerRepository;
-import com.ge.predix.solsvc.repository.TripRepository;
-import com.ge.predix.solsvc.service.sdo.Address;
-import com.ge.predix.solsvc.service.sdo.Driver;
-import com.ge.predix.solsvc.service.sdo.Passenger;
-import com.ge.predix.solsvc.service.sdo.Trip;
 
 /**
  * cf push -b https://github.com/cloudfoundry/java-buildpack#v3.19.2
@@ -80,14 +69,7 @@ import com.ge.predix.solsvc.service.sdo.Trip;
 @PropertySource("classpath:application-default.properties")
 @ComponentScan(basePackages = "com.ge.predix.solsvc")
 @Controller
-@EntityScan(basePackageClasses = { Passenger.class, 
-		Trip.class, 
-		Driver.class, 
-		Address.class })
-@EnableJpaRepositories(basePackageClasses = { PassengerRepository.class, 
-		TripRepository.class, 
-		DriverRepository.class,
-		AddressRepository.class})
+
 public class Application {
 	private static final Logger log = LoggerFactory.getLogger(Application.class);
 

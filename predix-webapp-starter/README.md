@@ -14,10 +14,10 @@ trip : {
     },
     to : : {
         lat : ,
-        lng : ,
+        lon : ,
         id : ''
     },
-    when : '',
+    whenmin : '',
     ts : 655454225,
     passengerid : '',
     driverid : ''
@@ -51,11 +51,18 @@ return  ['']
 ## PASSENGERS
    
 ```
-GET /rebu/p/v1/passengers/212442540
+GET /rebu/p/v1/passengers/{id}
 return passenger
 ```
 
 ## TRIPS
+
+Status should be:
+* pending
+* confirmed
+* accepted
+* cancelled
+* done
 
 ```
 GET /rebu/t/v1/trips?status=new &driverid=123456 &passengerid=212442540

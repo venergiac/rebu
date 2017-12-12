@@ -15,10 +15,13 @@ public class Passenger {
 
 	private String name;
 
-	
 	@Column(unique=true)
 	private String email;
 
+
+	public java.util.UUID getId() {
+		return id;
+	}
 
 	public String getEmail() {
 		return email;

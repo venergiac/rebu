@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
  */
 
 @RestController
-@RequestMapping("v1")
+@RequestMapping("rebu")
 public class HelloController
 {
 

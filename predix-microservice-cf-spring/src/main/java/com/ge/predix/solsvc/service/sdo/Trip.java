@@ -2,11 +2,12 @@ package com.ge.predix.solsvc.service.sdo;
 
 import java.util.Date;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
-import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
+import javax.validation.constraints.NotNull;
 
 import org.springframework.data.annotation.LastModifiedDate;
 
@@ -17,22 +18,31 @@ public class Trip {
 	@GeneratedValue
 	private java.util.UUID id;
 
+	@NotNull
 	private String status;
 
+	@Column(columnDefinition="tinyint(1) default 1")
 	private int stuff;
 
 	@LastModifiedDate
 	private Date timestamp;
 
-	@OneToOne
-	private Address from;
+	@NotNull
+	private String fromLat;
+	
+	@NotNull
+	private String fromLon;
 
 	@OneToOne
+	@NotNull
 	private Address to;
+	
+	private String toName;
 
 	private String whenmin;
 
 	@OneToOne
+	@NotNull
 	private Passenger passenger;
 
 	@OneToOne
@@ -100,12 +110,21 @@ public class Trip {
 		this.notes = notes;
 	}
 
-	public Address getFrom() {
-		return from;
+
+	public String getFromLat() {
+		return fromLat;
 	}
 
-	public void setFrom(Address from) {
-		this.from = from;
+	public void setFromLat(String fromLat) {
+		this.fromLat = fromLat;
+	}
+
+	public String getFromLon() {
+		return fromLon;
+	}
+
+	public void setFromLon(String fromLon) {
+		this.fromLon = fromLon;
 	}
 
 	public Address getTo() {
@@ -115,6 +134,22 @@ public class Trip {
 	public void setTo(Address to) {
 		this.to = to;
 	}
+
+	public String getToName() {
+		return toName;
+	}
+
+	public void setToName(String toName) {
+		this.toName = toName;
+	}
+
+	@Override
+	public String toString() {
+		return "Trip [id=" + id + ", status=" + status + ", stuff=" + stuff + ", timestamp=" + timestamp + ", fromLat="
+				+ fromLat + ", fromLon=" + fromLon + ", to=" + to + ", toName=" + toName + ", whenmin=" + whenmin
+				+ ", passenger=" + passenger + ", driver=" + driver + ", notes=" + notes + "]";
+	}
+
 	
 	
 

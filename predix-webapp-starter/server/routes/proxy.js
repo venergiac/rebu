@@ -193,6 +193,7 @@ var customProxyMiddleware = function(pathPrefix, endpoint, targetPath) {
 	return expressProxy(endpoint, {
 		https: endpoint.startsWith('https'),
 		forwardPath: function (req) {
+			console.log(req);
 			var path = req.url.replace(pathPrefix, targetPath || '');
 			console.log('proxying to:', path);
 			return path;
