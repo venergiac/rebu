@@ -13,7 +13,6 @@ import com.ge.predix.solsvc.service.sdo.Driver;
 import com.ge.predix.solsvc.service.sdo.Passenger;
 import com.ge.predix.solsvc.service.sdo.Trip;
 
-
 @Configuration
 @EnableJpaRepositories(basePackageClasses = { PassengerRepository.class, TripRepository.class, DriverRepository.class,
 		AddressRepository.class })

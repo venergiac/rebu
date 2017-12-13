@@ -14,7 +14,7 @@
 		<version>1.2.3.RELEASE</version>
 		-->
 		<version>1.5.8.RELEASE</version>
-
+	
 	</parent>
 
 	<properties>
@@ -82,7 +82,6 @@
     <version>42.1.4</version>
 </dependency>
 
-        
         <!-- JPA with REST -->
 
 	</dependencies>
@@ -125,6 +124,8 @@
 				<version>${cxf.version}</version>
 			</dependency>
 
+
+
 		</dependencies>
 	</dependencyManagement>
 
@@ -135,6 +136,21 @@
 				<groupId>org.codehaus.mojo</groupId>
 				<artifactId>versions-maven-plugin</artifactId>
 			</plugin>
+			<!-- 
+			<plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-checkstyle-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <id>validate</id>
+                        <phase>validate</phase>
+                        <goals>
+                            <goal>check</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+			 -->
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-compiler-plugin</artifactId>
@@ -266,7 +282,7 @@
 				<plugin>
 					<groupId>org.eclipse.m2e</groupId>
 					<artifactId>lifecycle-mapping</artifactId>
-					<version>1.0.0</version>
+					<version>1.7.0</version>
 					<configuration>
 						<lifecycleMappingMetadata>
 							<pluginExecutions>
